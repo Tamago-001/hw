@@ -1,1 +1,994 @@
+/* ==========================================================
+   HW Werewolf Online
+   style.css
+   Part 1
+   ========================================================== */
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+:root {
+
+    --bg: #121212;
+    --panel: #1d1d1d;
+    --card: #262626;
+
+    --accent: #6d5cff;
+    --accent2: #8d7cff;
+
+    --text: #ffffff;
+    --sub: #b8b8b8;
+
+    --border: #353535;
+
+    --success: #35d07f;
+    --danger: #ef5350;
+    --warning: #ffb300;
+
+    --radius: 14px;
+
+    --shadow:
+        0 10px 30px rgba(0,0,0,.35);
+
+    --transition: .2s ease;
+
+    font-family:
+        "Inter",
+        sans-serif;
+
+}
+
+html,
+body{
+
+    margin:0;
+    padding:0;
+
+    width:100%;
+    height:100%;
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    overflow:hidden;
+
+}
+
+body{
+
+    font-family:"Inter",sans-serif;
+
+}
+
+/* ==========================================================
+   APP
+   ========================================================== */
+
+#app{
+
+    display:flex;
+
+    flex-direction:column;
+
+    width:100%;
+    height:100%;
+
+}
+
+/* ==========================================================
+   TOP BAR
+   ========================================================== */
+
+#topbar{
+
+    height:64px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 20px;
+
+    background:#181818;
+
+    border-bottom:1px solid var(--border);
+
+    flex-shrink:0;
+
+}
+
+.logo{
+
+    font-size:22px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+}
+
+.status{
+
+    display:flex;
+
+    gap:12px;
+
+}
+
+.status span{
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    background:#2b2b2b;
+
+    font-size:13px;
+
+}
+
+/* ==========================================================
+   MAIN
+   ========================================================== */
+
+#main{
+
+    flex:1;
+
+    display:flex;
+
+    overflow:hidden;
+
+}
+
+/* ==========================================================
+   SCREEN
+   ========================================================== */
+
+.screen{
+
+    display:none;
+
+    width:100%;
+    height:100%;
+
+    padding:20px;
+
+    gap:20px;
+
+}
+
+.screen.active{
+
+    display:flex;
+
+}
+
+/* ==========================================================
+   PANEL
+   ========================================================== */
+
+.panel{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+    background:var(--panel);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    padding:18px;
+
+    overflow:auto;
+
+    box-shadow:var(--shadow);
+
+}
+
+.fullPanel{
+
+    width:100%;
+
+}
+
+/* ==========================================================
+   CARD
+   ========================================================== */
+
+.card{
+
+    background:var(--card);
+
+    border-radius:12px;
+
+    padding:15px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    border:1px solid var(--border);
+
+}
+/* ==========================================================
+   Typography
+   ========================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+
+    margin:0;
+
+    font-weight:700;
+
+}
+
+h2{
+
+    font-size:22px;
+
+}
+
+h3{
+
+    font-size:17px;
+
+}
+
+label{
+
+    font-size:14px;
+
+    color:var(--sub);
+
+}
+
+/* ==========================================================
+   Input
+   ========================================================== */
+
+input,
+select,
+textarea{
+
+    width:100%;
+
+    padding:12px 14px;
+
+    border-radius:10px;
+
+    border:1px solid var(--border);
+
+    background:#1f1f1f;
+
+    color:var(--text);
+
+    outline:none;
+
+    transition:var(--transition);
+
+    font-size:15px;
+
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    border-color:var(--accent);
+
+    box-shadow:
+        0 0 0 3px rgba(109,92,255,.25);
+
+}
+
+input::placeholder{
+
+    color:#888;
+
+}
+
+/* ==========================================================
+   Button
+   ========================================================== */
+
+button{
+
+    border:none;
+
+    cursor:pointer;
+
+    border-radius:10px;
+
+    padding:12px 18px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:var(--transition);
+
+    background:var(--accent);
+
+    color:white;
+
+}
+
+button:hover{
+
+    background:var(--accent2);
+
+    transform:translateY(-2px);
+
+}
+
+button:active{
+
+    transform:translateY(0);
+
+}
+
+button:disabled{
+
+    opacity:.45;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+}
+
+/* ==========================================================
+   Table
+   ========================================================== */
+
+.roleTable{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.roleTable td{
+
+    padding:8px 6px;
+
+    border-bottom:1px solid var(--border);
+
+}
+
+.roleTable td:first-child{
+
+    width:70%;
+
+}
+
+.roleTable input{
+
+    width:80px;
+
+}
+
+/* ==========================================================
+   Copy Row
+   ========================================================== */
+
+.copyRow{
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+}
+
+.copyRow input{
+
+    flex:1;
+
+}
+
+/* ==========================================================
+   Player List
+   ========================================================== */
+
+.playerList,
+.gamePlayerList,
+.actionPlayerList{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+/* ==========================================================
+   Player Card
+   ========================================================== */
+
+.playerCard{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    padding:12px 14px;
+
+    border-radius:12px;
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    transition:var(--transition);
+
+}
+
+.playerCard:hover{
+
+    border-color:var(--accent);
+
+}
+
+.playerInfo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.playerAvatar{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#393939;
+
+    font-size:22px;
+
+}
+
+.playerName{
+
+    font-weight:600;
+
+}
+
+.playerStatus{
+
+    font-size:13px;
+
+    color:var(--sub);
+
+}
+
+/* ==========================================================
+   Alive / Dead
+   ========================================================== */
+
+.playerCard.dead{
+
+    opacity:.45;
+
+    filter:grayscale(1);
+
+}
+
+.playerCard.selected{
+
+    border:2px solid var(--accent);
+
+    background:#2b2750;
+
+}
+/* ==========================================================
+   GAME INFO
+   ========================================================== */
+
+.infoRow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.infoRow:last-child{
+    border-bottom:none;
+}
+
+/* ==========================================================
+   ROLE CARD
+   ========================================================== */
+
+.roleCard{
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    gap:12px;
+
+    min-height:220px;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(135deg,#2c2c2c,#1b1b1b);
+
+    border:2px solid var(--accent);
+
+}
+
+#myRoleIcon{
+
+    font-size:64px;
+
+}
+
+#myRoleName{
+
+    font-size:26px;
+
+    font-weight:700;
+
+}
+
+#myRoleDescription{
+
+    color:var(--sub);
+
+    line-height:1.6;
+
+}
+
+/* ==========================================================
+   CHAT
+   ========================================================== */
+
+.chatLog{
+
+    flex:1;
+
+    overflow-y:auto;
+
+    background:#191919;
+
+    border-radius:12px;
+
+    border:1px solid var(--border);
+
+    padding:12px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.chatMessage{
+
+    padding:10px 12px;
+
+    border-radius:10px;
+
+    background:#252525;
+
+    word-break:break-word;
+
+}
+
+.chatMessage.system{
+
+    background:#23354f;
+
+}
+
+.chatMessage.self{
+
+    background:#2d4a34;
+
+}
+
+.chatName{
+
+    font-weight:700;
+
+    margin-bottom:5px;
+
+}
+
+.chatInputRow{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:12px;
+
+}
+
+.chatInputRow input{
+
+    flex:1;
+
+}
+
+/* ==========================================================
+   ACTION BUTTONS
+   ========================================================== */
+
+.centerButtons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:16px;
+
+    margin-top:20px;
+
+}
+
+/* ==========================================================
+   RESULT
+   ========================================================== */
+
+#resultMessage{
+
+    font-size:20px;
+
+    line-height:1.8;
+
+    text-align:center;
+
+    padding:40px 20px;
+
+}
+
+/* ==========================================================
+   ROLE REVEAL
+   ========================================================== */
+
+#roleRevealList{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+
+    gap:15px;
+
+}
+
+.roleRevealCard{
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:12px;
+
+    padding:16px;
+
+}
+
+/* ==========================================================
+   DIALOG
+   ========================================================== */
+
+#dialogOverlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.6);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:1000;
+
+}
+
+#dialog{
+
+    width:min(420px,90vw);
+
+    background:var(--panel);
+
+    border-radius:16px;
+
+    padding:24px;
+
+    border:1px solid var(--border);
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.dialogButtons{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:10px;
+
+}
+
+/* ==========================================================
+   LOADING
+   ========================================================== */
+
+#loadingOverlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.7);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:1500;
+
+}
+
+.loadingBox{
+
+    background:var(--panel);
+
+    border-radius:18px;
+
+    padding:30px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:18px;
+
+    border:1px solid var(--border);
+
+}
+
+.loader{
+
+    width:56px;
+
+    height:56px;
+
+    border-radius:50%;
+
+    border:6px solid #333;
+
+    border-top-color:var(--accent);
+
+    animation:spin 1s linear infinite;
+
+}
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/* ==========================================================
+   TOAST
+   ========================================================== */
+
+#toast{
+
+    position:fixed;
+
+    bottom:30px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    background:#222;
+
+    color:white;
+
+    padding:12px 18px;
+
+    border-radius:999px;
+
+    border:1px solid var(--border);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.25s;
+
+    z-index:2000;
+
+}
+
+#toast.show{
+
+    opacity:1;
+
+    transform:translate(-50%,0);
+
+}
+
+/* ==========================================================
+   UTIL
+   ========================================================== */
+
+.hidden{
+
+    display:none !important;
+
+}
+
+/* ==========================================================
+   SCROLLBAR
+   ========================================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+    height:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#1b1b1b;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#555;
+
+    border-radius:999px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#777;
+
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width:1100px){
+
+    #main{
+
+        overflow:auto;
+
+    }
+
+    .screen{
+
+        flex-direction:column;
+
+    }
+
+    .panel{
+
+        min-height:320px;
+
+    }
+
+}
+
+@media (max-width:700px){
+
+    #topbar{
+
+        flex-direction:column;
+
+        justify-content:center;
+
+        gap:8px;
+
+        height:auto;
+
+        padding:12px;
+
+    }
+
+    .copyRow{
+
+        flex-direction:column;
+
+    }
+
+    .chatInputRow{
+
+        flex-direction:column;
+
+    }
+
+    .centerButtons{
+
+        flex-direction:column;
+
+    }
+
+    button{
+
+        width:100%;
+
+    }
+
+}
+
+/* ==========================================================
+   END OF FILE
+   ========================================================== */
