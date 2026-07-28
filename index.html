@@ -1,1 +1,650 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- ==========================================
+         HW Werewolf Online
+         完全P2Pオンライン人狼
+         HTML/CSS/JS + PeerJS
+         ========================================== -->
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>HW Werewolf Online</title>
+
+    <!-- SEO -->
+    <meta name="description" content="完全P2Pオンライン人狼ゲーム">
+
+    <!-- テーマカラー -->
+    <meta name="theme-color" content="#151515">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- アイコン -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- PeerJS -->
+    <script src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script>
+
+</head>
+
+<body>
+
+<div id="app">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header id="topbar">
+
+        <div class="logo">
+
+            🐺 HW Werewolf
+
+        </div>
+
+        <div class="status">
+
+            <span id="connectionStatus">
+                未接続
+            </span>
+
+            <span id="phaseLabel">
+                ロビー
+            </span>
+
+        </div>
+
+    </header>
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main id="main">
+        <!-- =====================================================
+             LOBBY
+        ====================================================== -->
+
+        <section id="lobbyScreen" class="screen active">
+
+            <!-- 左側 -->
+            <div class="panel">
+
+                <h2>ルーム</h2>
+
+                <div class="card">
+
+                    <label>あなたの名前</label>
+
+                    <input
+                        id="playerName"
+                        type="text"
+                        maxlength="20"
+                        placeholder="名前を入力">
+
+                </div>
+
+                <div class="card">
+
+                    <button id="createRoomBtn">
+                        部屋を作成
+                    </button>
+
+                </div>
+
+                <div class="card">
+
+                    <label>あなたのPeer ID</label>
+
+                    <div class="copyRow">
+
+                        <input
+                            id="myPeerId"
+                            readonly
+                            placeholder="部屋作成後に表示">
+
+                        <button id="copyPeerBtn">
+                            コピー
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <label>参加するPeer ID</label>
+
+                    <input
+                        id="joinPeerId"
+                        placeholder="ホストのPeer ID">
+
+                    <button id="joinRoomBtn">
+                        部屋へ参加
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- 真ん中 -->
+            <div class="panel">
+
+                <h2>プレイヤー</h2>
+
+                <div
+                    id="playerList"
+                    class="playerList">
+
+                    <!-- JSで追加 -->
+
+                </div>
+
+            </div>
+
+            <!-- 右側 -->
+            <div class="panel">
+
+                <h2>ゲーム設定</h2>
+
+                <div class="card">
+
+                    <h3>役職人数</h3>
+
+                    <table class="roleTable">
+
+                        <tr>
+
+                            <td>🐺 人狼</td>
+
+                            <td>
+
+                                <input
+                                    id="wolfCount"
+                                    type="number"
+                                    min="1"
+                                    value="1">
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>🔮 占い師</td>
+
+                            <td>
+
+                                <input
+                                    id="seerCount"
+                                    type="number"
+                                    min="0"
+                                    value="1">
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>🤪 狂人</td>
+
+                            <td>
+
+                                <input
+                                    id="madmanCount"
+                                    type="number"
+                                    min="0"
+                                    value="0">
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>🛡 騎士</td>
+
+                            <td>
+
+                                <input
+                                    id="knightCount"
+                                    type="number"
+                                    min="0"
+                                    value="0">
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>🧛 吸血鬼</td>
+
+                            <td>
+
+                                <input
+                                    id="vampireCount"
+                                    type="number"
+                                    min="0"
+                                    value="0">
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>👤 市民</td>
+
+                            <td id="villagerCount">
+
+                                自動計算
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+
+                <div class="card">
+
+                    <label>
+
+                        昼の議論時間（秒）
+
+                    </label>
+
+                    <input
+                        id="dayTime"
+                        type="number"
+                        value="300">
+
+                </div>
+
+                <div class="card">
+
+                    <label>
+
+                        投票時間（秒）
+
+                    </label>
+
+                    <input
+                        id="voteTime"
+                        type="number"
+                        value="60">
+
+                </div>
+
+                <button
+                    id="startGameBtn"
+                    disabled>
+
+                    ゲーム開始
+
+                </button>
+
+            </div>
+
+        </section>
+                <!-- =====================================================
+             GAME
+        ====================================================== -->
+
+        <section id="gameScreen" class="screen">
+
+            <!-- ===========================
+                 左側
+            ============================ -->
+
+            <div class="panel gameLeft">
+
+                <h2>ゲーム情報</h2>
+
+                <div class="card">
+
+                    <div class="infoRow">
+                        <span>現在フェーズ</span>
+                        <strong id="gamePhase">
+                            ロビー
+                        </strong>
+                    </div>
+
+                    <div class="infoRow">
+                        <span>残り時間</span>
+                        <strong id="phaseTimer">
+                            --
+                        </strong>
+                    </div>
+
+                    <div class="infoRow">
+                        <span>日数</span>
+                        <strong id="dayCount">
+                            1日目
+                        </strong>
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>あなたの役職</h3>
+
+                    <div id="myRoleCard" class="roleCard">
+
+                        <div id="myRoleIcon">
+                            ❔
+                        </div>
+
+                        <div id="myRoleName">
+                            不明
+                        </div>
+
+                        <div id="myRoleDescription">
+                            ゲーム開始まで表示されません。
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>生存人数</h3>
+
+                    <div id="aliveCount">
+
+                        0人
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ===========================
+                 中央
+            ============================ -->
+
+            <div class="panel gameCenter">
+
+                <h2>プレイヤー一覧</h2>
+
+                <div
+                    id="gamePlayerList"
+                    class="gamePlayerList">
+
+                    <!-- JS -->
+
+                </div>
+
+            </div>
+
+            <!-- ===========================
+                 右側
+            ============================ -->
+
+            <div class="panel gameRight">
+
+                <h2>チャット</h2>
+
+                <div
+                    id="chatLog"
+                    class="chatLog">
+
+                </div>
+
+                <div class="chatInputRow">
+
+                    <input
+                        id="chatInput"
+                        maxlength="200"
+                        placeholder="メッセージ">
+
+                    <button id="sendChatBtn">
+
+                        送信
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+                <!-- =====================================================
+             NIGHT ACTION
+        ====================================================== -->
+
+        <section id="nightScreen" class="screen">
+
+            <div class="panel fullPanel">
+
+                <h2>🌙 夜フェーズ</h2>
+
+                <p id="nightDescription">
+                    夜の行動を選択してください。
+                </p>
+
+                <div
+                    id="nightActionList"
+                    class="actionPlayerList">
+
+                    <!-- JSで対象プレイヤーを生成 -->
+
+                </div>
+
+                <div class="centerButtons">
+
+                    <button
+                        id="confirmNightActionBtn"
+                        disabled>
+
+                        行動を確定
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+             VOTE
+        ====================================================== -->
+
+        <section id="voteScreen" class="screen">
+
+            <div class="panel fullPanel">
+
+                <h2>🗳 投票</h2>
+
+                <p>
+                    処刑したいプレイヤーを選択してください。
+                </p>
+
+                <div
+                    id="votePlayerList"
+                    class="actionPlayerList">
+
+                    <!-- JS -->
+
+                </div>
+
+                <div class="centerButtons">
+
+                    <button
+                        id="confirmVoteBtn"
+                        disabled>
+
+                        投票する
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+             RESULT
+        ====================================================== -->
+
+        <section id="resultScreen" class="screen">
+
+            <div class="panel fullPanel">
+
+                <h2>📢 結果発表</h2>
+
+                <div id="resultMessage">
+
+                </div>
+
+                <button id="nextPhaseBtn">
+
+                    次へ
+
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+             GAME END
+        ====================================================== -->
+
+        <section id="endScreen" class="screen">
+
+            <div class="panel fullPanel">
+
+                <h1 id="winnerLabel">
+
+                    勝利！
+
+                </h1>
+
+                <div id="roleRevealList">
+
+                    <!-- 全員の役職 -->
+
+                </div>
+
+                <div class="centerButtons">
+
+                    <button id="returnLobbyBtn">
+
+                        ロビーへ戻る
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- =====================================================
+     Toast
+====================================================== -->
+
+<div id="toast">
+
+</div>
+
+<!-- =====================================================
+     Dialog
+====================================================== -->
+
+<div id="dialogOverlay" class="hidden">
+
+    <div id="dialog">
+
+        <h2 id="dialogTitle">
+            タイトル
+        </h2>
+
+        <p id="dialogMessage">
+
+        </p>
+
+        <div class="dialogButtons">
+
+            <button id="dialogOk">
+
+                OK
+
+            </button>
+
+            <button id="dialogCancel">
+
+                キャンセル
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     Loading
+====================================================== -->
+
+<div id="loadingOverlay" class="hidden">
+
+    <div class="loadingBox">
+
+        <div class="loader"></div>
+
+        <div id="loadingText">
+
+            接続中...
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     Audio
+====================================================== -->
+
+<audio id="bgm" preload="auto" loop></audio>
+
+<audio id="seJoin" preload="auto"></audio>
+<audio id="seLeave" preload="auto"></audio>
+<audio id="seVote" preload="auto"></audio>
+<audio id="seNight" preload="auto"></audio>
+<audio id="seMorning" preload="auto"></audio>
+<audio id="seWin" preload="auto"></audio>
+<audio id="seLose" preload="auto"></audio>
+
+<!-- =====================================================
+     JavaScript
+====================================================== -->
+
+<script src="main.js"></script>
+
+</body>
+</html>
