@@ -171,3 +171,267 @@ function connectPeer(peerId){
     return connection;
 
 }
+/*
+==========================================================
+HW Werewolf Online
+peer.js
+Part 2
+==========================================================
+*/
+
+/* ======================================================
+   Send Packet
+====================================================== */
+
+function sendPacket(connection, type, payload = {}) {
+
+    if (!connection) return;
+
+    if (!connection.open) return;
+
+    connection.send({
+
+        type,
+
+        payload,
+
+        sender: state.myId,
+
+        timestamp: Date.now()
+
+    });
+
+}
+
+/* ======================================================
+   Broadcast
+====================================================== */
+
+function broadcast(type, payload = {}) {
+
+    connections.forEach(connection => {
+
+        sendPacket(connection, type, payload);
+
+    });
+
+}
+
+/* ======================================================
+   Receive Packet
+====================================================== */
+
+function receivePacket(connection, packet) {
+
+    if (!packet || !packet.type) return;
+
+    console.log(
+        "[RECV]",
+        packet.type,
+        packet.payload
+    );
+
+    switch (packet.type) {
+
+        case "join":
+
+            if (typeof onPlayerJoin === "function") {
+
+                onPlayerJoin(
+                    connection,
+                    packet.payload
+                );
+
+            }
+
+            break;
+
+        case "leave":
+
+            if (typeof onPlayerLeave === "function") {
+
+                onPlayerLeave(
+                    connection,
+                    packet.payload
+                );
+
+            }
+
+            break;
+
+        case "chat":
+
+            if (typeof onChatMessage === "function") {
+
+                onChatMessage(
+                    connection,
+                    packet.payload
+                );
+
+            }
+
+            break;
+
+        case "sync":
+
+            if (typeof onSync === "function") {
+
+                onSync(
+                    connection,
+                    packet.payload
+                );
+
+            }
+
+            break;
+
+        case "game":
+
+            if (typeof onGamePacket === "function") {
+
+                onGamePacket(
+                    connection,
+                    packet.payload
+                );
+
+            }
+
+            break;
+
+        case "ping":
+
+            sendPacket(
+
+                connection,
+
+                "pong",
+
+                {}
+
+            );
+
+            break;
+
+        case "pong":
+
+            console.log(
+
+                "Ping:",
+
+                connection.peer,
+
+                "OK"
+
+            );
+
+            break;
+
+        default:
+
+            console.warn(
+
+                "Unknown Packet:",
+
+                packet.type
+
+            );
+
+    }
+
+}
+
+/* ======================================================
+   Ping
+====================================================== */
+
+let pingInterval = null;
+
+function startPing() {
+
+    stopPing();
+
+    pingInterval = setInterval(() => {
+
+        broadcast("ping");
+
+    }, 5000);
+
+}
+
+function stopPing() {
+
+    if (pingInterval) {
+
+        clearInterval(pingInterval);
+
+        pingInterval = null;
+
+    }
+
+}
+
+/* ======================================================
+   Disconnect
+====================================================== */
+
+function disconnectPeer() {
+
+    stopPing();
+
+    connections.forEach(connection => {
+
+        try {
+
+            connection.close();
+
+        } catch (e) {
+
+            console.error(e);
+
+        }
+
+    });
+
+    connections.clear();
+
+    if (state.peer) {
+
+        try {
+
+            state.peer.destroy();
+
+        } catch (e) {
+
+            console.error(e);
+
+        }
+
+        state.peer = null;
+
+    }
+
+    state.connected = false;
+
+    state.myId = "";
+
+    dom.myPeerId.value = "";
+
+    setConnectionStatus("未接続");
+
+}
+
+/* ======================================================
+   Utility
+====================================================== */
+
+function getConnection(peerId) {
+
+    return connections.get(peerId);
+
+}
+
+function hasConnection(peerId) {
+
+    return connections.has(peerId);
+
+}
